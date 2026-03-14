@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDLC Tool Stack Map</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121933;
+      --panel-2: #182242;
+      --text: #edf2ff;
+      --muted: #a9b4d0;
+      --line: #2a3768;
+      --accent: #7aa2ff;
+      --accent-2: #8ef0d0;
+      --warn: #ffd166;
+      --shadow: 0 18px 40px rgba(0,0,0,.28);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #0a0f1d 0%, #0e1530 100%);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(122,162,255,.18), rgba(142,240,208,.12));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 880px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.3fr .9fr .9fr;
+      gap: 14px;
+      margin: 20px 0 24px;
+    }
+
+    .card {
+      background: rgba(18, 25, 51, .85);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .control-card {
+      padding: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: .86rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      background: #0d1430;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: .98rem;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(122,162,255,.15);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .9rem;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255,255,255,.03);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .atl { background: var(--accent); }
+    .mod { background: var(--accent-2); }
+    .hyb { background: var(--warn); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr .95fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 860px;
+    }
+
+    th, td {
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      background: rgba(255,255,255,.02);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tbody tr:hover {
+      background: rgba(255,255,255,.025);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .badge.atlassian { background: rgba(122,162,255,.12); color: #bcd0ff; }
+    .badge.modern { background: rgba(142,240,208,.12); color: #b9ffed; }
+    .badge.hybrid { background: rgba(255,209,102,.12); color: #ffe3a0; }
+
+    .right-col {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 1.1rem;
+    }
+
+    .panel p, .panel li {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--line);
+    }
+
+    .step-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1024px) {
+      .controls, .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Software Development Lifecycle Tool Map</h1>
+      <p class="sub">
+        A live comparison of how the Atlassian stack, the modern startup stack, and hybrid workflows map onto the SDLC from planning through release, support, and iteration.
+      </p>
+      <div class="legend" aria-label="Legend">
+        <span class="chip"><span class="dot atl"></span> Atlassian stack</span>
+        <span class="chip"><span class="dot mod"></span> Modern startup stack</span>
+        <span class="chip"><span class="dot hyb"></span> Hybrid stack</span>
+      </div>
+    </section>
+
+    <section class="controls">
+      <div class="card control-card">
+        <label for="search">Search SDLC stage or tool</label>
+        <input id="search" type="text" placeholder="Try planning, GitHub, Jira, docs, CI/CD..." />
+      </div>
+      <div class="card control-card">
+        <label for="stackFilter">Filter by stack type</label>
+        <select id="stackFilter">
+          <option value="all">All stacks</option>
+          <option value="Atlassian">Atlassian only</option>
+          <option value="Modern">Modern only</option>
+          <option value="Hybrid">Hybrid only</option>
+        </select>
+      </div>
+      <div class="card control-card">
+        <label for="phaseFilter">Jump to SDLC phase</label>
+        <select id="phaseFilter">
+          <option value="all">All phases</option>
+          <option>Discovery & Planning</option>
+          <option>Documentation & Specs</option>
+          <option>Work Management</option>
+          <option>Development</option>
+          <option>Code Review</option>
+          <option>CI/CD & Release</option>
+          <option>Operations & Support</option>
+          <option>Retrospective & Knowledge Capture</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>SDLC Phase</th>
+              <th>Atlassian Stack</th>
+              <th>Modern Stack</th>
+              <th>Hybrid Pattern</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="right-col">
+        <div class="card panel">
+          <h2>Quick read</h2>
+          <p>
+            Atlassian is strongest when a company wants process control, traceability, and tighter governance. Modern stacks win on speed, simplicity, and developer happiness. Hybrid setups are common because they split the difference.
+          </p>
+          <p>
+            The usual hybrid pattern is <strong>GitHub for code</strong>, <strong>Jira for enterprise tracking</strong>, and <strong>Notion or Confluence for docs</strong>.
+          </p>
+        </div>
+
+        <div class="card panel">
+          <h2>Typical lifecycle loop</h2>
+          <div class="timeline">
+            <div class="step">
+              <div class="step-title">1. Define the work</div>
+              <div class="muted">Feature ideas, specs, acceptance criteria, and scope are documented.</div>
+            </div>
+            <div class="step">
+              <div class="step-title">2. Break it into execution</div>
+              <div class="muted">Tasks, stories, bugs, and ownership get assigned and prioritized.</div>
+            </div>
+            <div class="step">
+              <div class="step-title">3. Build and review</div>
+              <div class="muted">Developers code in branches, open PRs, and run tests before merge.</div>
+            </div>
+            <div class="step">
+              <div class="step-title">4. Ship and observe</div>
+              <div class="muted">Pipelines deploy changes and teams watch incidents, regressions, and performance.</div>
+            </div>
+            <div class="step">
+              <div class="step-title">5. Capture learning</div>
+              <div class="muted">Release notes, postmortems, and internal knowledge update the system for the next cycle.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card panel">
+          <h2>Best fit by team type</h2>
+          <ul>
+            <li><strong>Enterprise:</strong> Jira + Confluence + Bitbucket or GitHub Enterprise</li>
+            <li><strong>Startup:</strong> Linear + Notion + GitHub</li>
+            <li><strong>Scaling org:</strong> Jira + GitHub + Notion or Confluence</li>
+          </ul>
+          <p class="footer-note">Use the filters above to slice the table by workflow style or SDLC phase.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const rows = [
+      {
+        phase: 'Discovery & Planning',
+        atlassian: 'Confluence for problem framing and requirements, plus Jira roadmap intake.',
+        modern: 'Notion docs, lightweight planning, sometimes Linear initiatives.',
+        hybrid: 'Notion or Confluence for thinking, Jira for formal intake.',
+        why: 'This is where rough ideas become scoped work with business context.',
+        stack: 'Hybrid'
+      },
+      {
+        phase: 'Documentation & Specs',
+        atlassian: 'Confluence houses PRDs, architecture notes, meeting records, and decision logs.',
+        modern: 'Notion acts as the living spec, wiki, and async collaboration hub.',
+        hybrid: 'Confluence for controlled docs, Notion for flexible team pages.',
+        why: 'Clear specs reduce rework and stop teams from building the wrong thing.',
+        stack: 'Atlassian'
+      },
+      {
+        phase: 'Work Management',
+        atlassian: 'Jira manages epics, stories, bugs, sprints, workflows, and reporting.',
+        modern: 'Linear tracks issues, cycles, priorities, and project views with less overhead.',
+        hybrid: 'Jira for cross functional governance, GitHub Issues for local dev work.',
+        why: 'Work tracking keeps ownership, status, and sequencing visible.',
+        stack: 'Atlassian'
+      },
+      {
+        phase: 'Development',
+        atlassian: 'Bitbucket repositories, branches, and code collaboration.',
+        modern: 'GitHub repositories dominate for source control, branching, and collaboration.',
+        hybrid: 'GitHub for code, Jira issue keys in branch names and commits.',
+        why: 'This is the actual build phase where code moves from idea to implementation.',
+        stack: 'Modern'
+      },
+      {
+        phase: 'Code Review',
+        atlassian: 'Bitbucket pull requests with inline review and approval rules.',
+        modern: 'GitHub pull requests with broader ecosystem support and review automation.',
+        hybrid: 'GitHub PRs linked back to Jira tickets for status updates.',
+        why: 'Review improves quality, catches bugs, and shares knowledge across the team.',
+        stack: 'Hybrid'
+      },
+      {
+        phase: 'CI/CD & Release',
+        atlassian: 'Bitbucket Pipelines and Jira release tracking.',
+        modern: 'GitHub Actions plus release workflows and deployment integrations.',
+        hybrid: 'GitHub Actions for delivery, Jira for release coordination and audit trail.',
+        why: 'Automation reduces manual risk and helps teams ship consistently.',
+        stack: 'Hybrid'
+      },
+      {
+        phase: 'Operations & Support',
+        atlassian: 'Jira Service Management or Jira incident workflows, linked to runbooks in Confluence.',
+        modern: 'GitHub Issues, incident tools, Slack, and Notion runbooks.',
+        hybrid: 'Dedicated incident stack plus Jira tickets and knowledge pages.',
+        why: 'Support and incident response turn production problems into trackable follow up work.',
+        stack: 'Hybrid'
+      },
+      {
+        phase: 'Retrospective & Knowledge Capture',
+        atlassian: 'Confluence postmortems, release notes, retros, and internal documentation.',
+        modern: 'Notion retro docs, changelogs, and team playbooks.',
+        hybrid: 'Postmortem in Confluence or Notion, action items pushed into Jira.',
+        why: 'The team gets compounding value only if lessons learned feed the next cycle.',
+        stack: 'Hybrid'
+      }
+    ];
+
+    const body = document.getElementById('tableBody');
+    const search = document.getElementById('search');
+    const stackFilter = document.getElementById('stackFilter');
+    const phaseFilter = document.getElementById('phaseFilter');
+
+    function badgeClass(label) {
+      if (label === 'Atlassian') return 'atlassian';
+      if (label === 'Modern') return 'modern';
+      return 'hybrid';
+    }
+
+    function render() {
+      const q = search.value.trim().toLowerCase();
+      const stack = stackFilter.value;
+      const phase = phaseFilter.value;
+
+      const filtered = rows.filter(row => {
+        const haystack = [row.phase, row.atlassian, row.modern, row.hybrid, row.why, row.stack].join(' ').toLowerCase();
+        const matchesSearch = !q || haystack.includes(q);
+        const matchesStack = stack === 'all' || row.stack === stack;
+        const matchesPhase = phase === 'all' || row.phase === phase;
+        return matchesSearch && matchesStack && matchesPhase;
+      });
+
+      body.innerHTML = filtered.map(row => `
+        <tr>
+          <td>
+            <strong>${row.phase}</strong><br>
+            <span class="badge ${badgeClass(row.stack)}">${row.stack}</span>
+          </td>
+          <td>${row.atlassian}</td>
+          <td>${row.modern}</td>
+          <td>${row.hybrid}</td>
+          <td>${row.why}</td>
+        </tr>
+      `).join('');
+
+      if (!filtered.length) {
+        body.innerHTML = `
+          <tr>
+            <td colspan="5">
+              <strong>No matches found.</strong><br>
+              <span class="muted">Try a different search term or relax the filters.</span>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    search.addEventListener('input', render);
+    stackFilter.addEventListener('change', render);
+    phaseFilter.addEventListener('change', render);
+    render();
+  </script>
+</body>
+</html>
