@@ -31,6 +31,33 @@
       background: linear-gradient(180deg, #0a0f1d 0%, #0e1530 100%);
       color: var(--text);
     }
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      padding: 8px 16px;
+      z-index: 10000;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      background: #121933;
+      color: #edf2ff;
+    }
+    .skip-link:focus {
+      left: 10px;
+      top: 10px;
+      outline: 2px solid currentColor;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
 
     a:focus-visible,
     button:focus-visible,
@@ -156,7 +183,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 860px;
+      min-width: 0;
     }
 
     th, td {
@@ -246,9 +273,16 @@
         grid-template-columns: 1fr;
       }
     }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      table { font-size: 0.85rem; }
+      th, td { padding: 8px 6px; }
+      .table-wrap { -webkit-overflow-scrolling: touch; }
+    }
   </style>
 </head>
 <body>
+  <a href="#main" class="skip-link">Skip to content</a>
   <a href="https://davehomeassist.github.io/"
      style="display:inline-flex;align-items:center;gap:.35rem;position:fixed;
             top:.65rem;left:.85rem;z-index:100;font-size:.7rem;
@@ -256,7 +290,7 @@
             text-decoration:none;transition:color .15s;"
      onmouseover="this.style.color='currentColor'"
      onmouseout="this.style.color='rgba(255,255,255,0.4)'">&larr; DaveHomeAssist</a>
-  <div class="wrap">
+  <main class="wrap" id="main">
     <section class="hero">
       <h1>Software Development Lifecycle Tool Map</h1>
       <p class="sub">
@@ -302,6 +336,7 @@
     <section class="grid">
       <div class="card table-wrap">
         <table>
+          <caption class="sr-only">SDLC phases mapped to tool stacks across Atlassian, modern startup, and hybrid approaches</caption>
           <thead>
             <tr>
               <th>SDLC Phase</th>
@@ -363,7 +398,7 @@
         </div>
       </div>
     </section>
-  </div>
+  </main>
 
   <script>
     const rows = [
