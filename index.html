@@ -3,526 +3,591 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Visual map of software development lifecycle tools organized by phase, from planning through deployment and monitoring.">
-  <title>SDLC Tool Stack Map</title>
-      <link rel="icon" type="image/svg+xml" href="assets/icons/favicon/favicon.svg">
-      <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon/favicon-16.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/favicon/apple-touch-icon.png" />
-<style>
+  <meta name="description" content="AI delivery control surface prototype for Phase 5 developer interface and Phase 6 observability." />
+  <title>AI Delivery Control Surface</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon/favicon.svg" />
+  <style>
     :root {
-      --bg: #0b1020;
-      --panel: #121933;
-      --panel-2: #182242;
-      --text: #edf2ff;
-      --muted: #a9b4d0;
-      --line: #2a3768;
-      --accent: #7aa2ff;
-      --accent-2: #8ef0d0;
-      --warn: #ffd166;
-      --shadow: 0 18px 40px rgba(0,0,0,.28);
+      --bg: #f4eee2;
+      --panel: rgba(255, 251, 244, 0.9);
+      --ink: #1f2a31;
+      --muted: #607078;
+      --line: rgba(31, 42, 49, 0.14);
+      --teal: #0f6f73;
+      --rust: #b85d34;
+      --ok: #2d6b4f;
+      --warn: #b77a1e;
+      --shadow: 0 20px 40px rgba(61, 42, 20, 0.1);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI Variable", "Segoe UI", "Trebuchet MS", sans-serif;
+      --mono: Consolas, "SFMono-Regular", monospace;
       --radius: 18px;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(180deg, #0a0f1d 0%, #0e1530 100%);
-      color: var(--text);
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(15, 111, 115, 0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(184, 93, 52, 0.12), transparent 22%),
+        linear-gradient(180deg, #f8f2e8 0%, var(--bg) 100%);
     }
+    button, input, select, textarea { font: inherit; }
+    a { color: inherit; }
     .skip-link {
-      position: absolute;
-      left: -9999px;
-      top: auto;
-      padding: 8px 16px;
-      z-index: 10000;
-      text-decoration: none;
-      border-radius: 4px;
-      font-size: 14px;
-      background: #121933;
-      color: #edf2ff;
+      position: absolute; left: -9999px; top: auto; z-index: 100;
+      padding: 8px 12px; background: #fff; border-radius: 999px;
     }
-    .skip-link:focus {
-      left: 10px;
-      top: 10px;
-      outline: 2px solid currentColor;
-    }
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-
-    a:focus-visible,
-    button:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
-      outline: 2px solid var(--accent-2);
-      outline-offset: 3px;
-    }
-
-    .wrap {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 28px;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, rgba(122,162,255,.18), rgba(142,240,208,.12));
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-      margin-bottom: 22px;
-    }
-
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height: 1.05;
-      letter-spacing: -.03em;
-    }
-
-    .sub {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1.05rem;
-      max-width: 880px;
-    }
-
-    .controls {
-      display: grid;
-      grid-template-columns: 1.3fr .9fr .9fr;
-      gap: 14px;
-      margin: 20px 0 24px;
-    }
-
-    .card {
-      background: rgba(18, 25, 51, .85);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .control-card {
-      padding: 16px;
-    }
-
-    label {
-      display: block;
-      font-size: .86rem;
-      color: var(--muted);
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-
-    input, select {
-      width: 100%;
-      background: #0d1430;
-      color: var(--text);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: .98rem;
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(122,162,255,.15);
-    }
-
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: .9rem;
-      border: 1px solid var(--line);
-      color: var(--text);
-      background: rgba(255,255,255,.03);
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .atl { background: var(--accent); }
-    .mod { background: var(--accent-2); }
-    .hyb { background: var(--warn); }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1.2fr .95fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .table-wrap {
-      overflow: auto;
-      border-radius: var(--radius);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 0;
-    }
-
-    th, td {
-      padding: 14px 14px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th {
-      font-size: .82rem;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--muted);
-      background: rgba(255,255,255,.02);
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-
-    tbody tr:hover {
-      background: rgba(255,255,255,.025);
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: .78rem;
-      font-weight: 700;
-      border: 1px solid var(--line);
-      white-space: nowrap;
-    }
-
-    .badge.atlassian { background: rgba(122,162,255,.12); color: #bcd0ff; }
-    .badge.modern { background: rgba(142,240,208,.12); color: #b9ffed; }
-    .badge.hybrid { background: rgba(255,209,102,.12); color: #ffe3a0; }
-
-    .right-col {
-      display: grid;
-      gap: 18px;
-    }
-
-    .panel {
-      padding: 18px;
-    }
-
-    .panel h2 {
-      margin: 0 0 12px;
-      font-size: 1.1rem;
-    }
-
-    .panel p, .panel li {
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .timeline {
-      display: grid;
-      gap: 12px;
-    }
-
-    .step {
-      padding: 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--line);
-    }
-
-    .step-title {
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .muted {
+    .skip-link:focus { left: 12px; top: 12px; }
+    .back {
+      position: fixed; top: 14px; left: 14px; z-index: 10;
+      padding: 8px 12px; border-radius: 999px; text-decoration: none;
+      background: rgba(255,255,255,0.82); border: 1px solid var(--line); box-shadow: var(--shadow);
       color: var(--muted);
     }
-
-    .footer-note {
-      margin-top: 18px;
-      font-size: .9rem;
-      color: var(--muted);
+    .shell { max-width: 1440px; margin: 0 auto; padding: 84px 20px 30px; }
+    .hero, .card {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow);
     }
-
-    @media (max-width: 1024px) {
-      .controls, .grid {
-        grid-template-columns: 1fr;
-      }
+    .hero { padding: 28px; margin-bottom: 18px; }
+    .eyebrow {
+      display: inline-block; padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.72); border: 1px solid var(--line);
+      color: var(--muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em;
     }
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: 1fr; }
-      table { font-size: 0.85rem; }
-      th, td { padding: 8px 6px; }
-      .table-wrap { -webkit-overflow-scrolling: touch; }
+    .hero-grid, .toolbar, .layout { display: grid; gap: 16px; }
+    .hero-grid { grid-template-columns: 1.5fr 0.9fr; margin-top: 14px; }
+    h1, h2, h3 { margin: 0; font-family: var(--serif); letter-spacing: -0.03em; }
+    h1 { font-size: clamp(2.5rem, 6vw, 4.8rem); line-height: 0.94; max-width: 10ch; }
+    p { margin: 0; color: var(--muted); line-height: 1.6; }
+    .hero p { max-width: 68ch; margin-top: 12px; }
+    .aside { padding: 20px; border-radius: 20px; background: #1a2c33; color: #f7f2ea; }
+    .aside p, .aside li { color: rgba(247, 242, 234, 0.78); }
+    .aside ul { margin: 12px 0 0; padding-left: 18px; }
+    .kpis, .mini-kpis, .metrics, .routing, .prompts, .pipeline, .workspaces { display: grid; gap: 12px; }
+    .kpis { grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: 18px; }
+    .mini-kpis, .metrics, .routing { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .kpi, .metric, .phase, .workspace, .route, .prompt, .queue-item {
+      padding: 15px; border-radius: var(--radius); border: 1px solid var(--line); background: rgba(255,255,255,0.62);
     }
-  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+    .kpi strong, .metric strong { display: block; font-family: var(--serif); font-size: 1.6rem; margin-bottom: 4px; }
+    .toolbar { grid-template-columns: 1.15fr 0.85fr; margin-bottom: 18px; }
+    .card { padding: 18px; }
+    .head { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+    .mode-toggle { display: inline-flex; gap: 8px; padding: 6px; border-radius: 999px; background: rgba(31,42,49,0.06); border: 1px solid var(--line); }
+    .mode-toggle button, .btn, .ghost, .queue-item button {
+      border: 0; border-radius: 999px; cursor: pointer; transition: transform 140ms ease;
+    }
+    .mode-toggle button { padding: 10px 14px; background: transparent; color: var(--muted); }
+    .mode-toggle button.active { background: var(--ink); color: #fff; }
+    .btn, .ghost, .queue-item button { padding: 10px 15px; }
+    .btn { color: #fff; background: linear-gradient(135deg, var(--teal), #0a5457); }
+    .ghost, .queue-item button { color: var(--ink); background: rgba(255,255,255,0.78); border: 1px solid var(--line); }
+    .mode-toggle button:hover, .btn:hover, .ghost:hover, .queue-item button:hover { transform: translateY(-1px); }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .queue { display: grid; gap: 10px; }
+    .queue-top, .phase-top, .workspace-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .pill, .status {
+      display: inline-flex; align-items: center; min-height: 30px; padding: 6px 10px; border-radius: 999px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .pill { background: rgba(31,42,49,0.06); border: 1px solid var(--line); color: var(--muted); }
+    .status.completed { color: var(--ok); background: rgba(45,107,79,0.12); }
+    .status.running { color: var(--teal); background: rgba(15,111,115,0.12); }
+    .status.awaiting_approval { color: var(--rust); background: rgba(184,93,52,0.12); }
+    .status.queued { color: var(--muted); background: rgba(31,42,49,0.08); }
+    .layout { grid-template-columns: 1.48fr 0.92fr; }
+    .column { display: grid; gap: 16px; }
+    .intake { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .field { display: grid; gap: 8px; }
+    .field.wide { grid-column: 1 / -1; }
+    label { color: var(--muted); font-size: 0.88rem; font-weight: 600; }
+    input, select, textarea {
+      width: 100%; padding: 12px; border-radius: 14px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82); color: var(--ink);
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    .pipeline, .workspaces { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .phase, .workspace, .metric, .route, .prompt { display: grid; gap: 10px; }
+    .workspace pre, .prompt pre {
+      margin: 0; padding: 12px; border-radius: 14px; overflow: auto;
+      background: #22323a; color: #eef2ee; font-family: var(--mono); font-size: 0.8rem; line-height: 1.55; white-space: pre-wrap;
+    }
+    .pr-card { background: #172a31; color: #f7f2ea; }
+    .pr-card p, .pr-card li { color: rgba(247,242,234,0.82); }
+    .pr-copy { display: grid; gap: 12px; margin-top: 12px; }
+    .pr-copy section { padding-top: 12px; border-top: 1px solid rgba(247,242,234,0.12); }
+    .pr-copy h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--sans); color: rgba(247,242,234,0.72); margin-bottom: 8px; }
+    .pr-copy ul, .route ul { margin: 0; padding-left: 18px; }
+    details { border-radius: var(--radius); border: 1px solid var(--line); background: rgba(255,255,255,0.66); }
+    summary { cursor: pointer; list-style: none; padding: 16px; font-weight: 700; }
+    summary::-webkit-details-marker { display: none; }
+    .prompt-body { padding: 0 16px 16px; display: grid; gap: 10px; }
+    .note { font-size: 0.88rem; }
+    @media (max-width: 1180px) {
+      .hero-grid, .toolbar, .layout, .pipeline, .workspaces, .metrics, .routing { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .shell { padding: 82px 14px 22px; }
+      .hero, .card, .aside { padding: 16px; }
+      .kpis, .mini-kpis, .intake { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-  <a href="#main" class="skip-link">Skip to content</a>
-  <a href="https://davehomeassist.github.io/"
-     style="display:inline-flex;align-items:center;gap:.35rem;position:fixed;
-            top:.65rem;left:.85rem;z-index:100;font-size:.7rem;
-            letter-spacing:.04em;color:rgba(255,255,255,0.4);
-            text-decoration:none;transition:color .15s;"
-     onmouseover="this.style.color='currentColor'"
-     onmouseout="this.style.color='rgba(255,255,255,0.4)'">&larr; DaveHomeAssist</a>
-  <main class="wrap" id="main">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="back" href="https://davehomeassist.github.io/">Back to DaveHomeAssist</a>
+  <main class="shell" id="main">
     <section class="hero">
-      <h1>Software Development Lifecycle Tool Map</h1>
-      <p class="sub">
-        A live comparison of how the Atlassian stack, the modern startup stack, and hybrid workflows map onto the SDLC from planning through release, support, and iteration.
-      </p>
-      <div class="legend" aria-label="Legend">
-        <span class="chip"><span class="dot atl"></span> Atlassian stack</span>
-        <span class="chip"><span class="dot mod"></span> Modern startup stack</span>
-        <span class="chip"><span class="dot hyb"></span> Hybrid stack</span>
-      </div>
-    </section>
-
-    <section class="controls">
-      <div class="card control-card">
-        <label for="search">Search SDLC stage or tool</label>
-        <input id="search" type="text" placeholder="Try planning, GitHub, Jira, docs, CI/CD..." />
-      </div>
-      <div class="card control-card">
-        <label for="stackFilter">Filter by stack type</label>
-        <select id="stackFilter">
-          <option value="all">All stacks</option>
-          <option value="Atlassian">Atlassian only</option>
-          <option value="Modern">Modern only</option>
-          <option value="Hybrid">Hybrid only</option>
-        </select>
-      </div>
-      <div class="card control-card">
-        <label for="phaseFilter">Jump to SDLC phase</label>
-        <select id="phaseFilter">
-          <option value="all">All phases</option>
-          <option>Discovery & Planning</option>
-          <option>Documentation & Specs</option>
-          <option>Work Management</option>
-          <option>Development</option>
-          <option>Code Review</option>
-          <option>CI/CD & Release</option>
-          <option>Operations & Support</option>
-          <option>Retrospective & Knowledge Capture</option>
-        </select>
-      </div>
-    </section>
-
-    <section class="grid">
-      <div class="card table-wrap">
-        <table>
-          <caption class="sr-only">SDLC phases mapped to tool stacks across Atlassian, modern startup, and hybrid approaches</caption>
-          <thead>
-            <tr>
-              <th>SDLC Phase</th>
-              <th>Atlassian Stack</th>
-              <th>Modern Stack</th>
-              <th>Hybrid Pattern</th>
-              <th>Why It Matters</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-
-      <div class="right-col">
-        <div class="card panel">
-          <h2>Quick read</h2>
-          <p>
-            Atlassian is strongest when a company wants process control, traceability, and tighter governance. Modern stacks win on speed, simplicity, and developer happiness. Hybrid setups are common because they split the difference.
-          </p>
-          <p>
-            The usual hybrid pattern is <strong>GitHub for code</strong>, <strong>Jira for enterprise tracking</strong>, and <strong>Notion or Confluence for docs</strong>.
-          </p>
+      <span class="eyebrow">Phase 5 and Phase 6 / browser-run beta</span>
+      <div class="hero-grid">
+        <div>
+          <h1>AI Delivery Control Surface</h1>
+          <p>This prototype turns your spec into one sane human-facing dashboard: feature intake, automatic versus gate-by-gate execution, workspace visibility, PR explanations, observability, and Codex-like versus Claude-like routing.</p>
+          <div class="kpis" id="heroKpis"></div>
         </div>
+        <aside class="aside">
+          <h2>What is real here</h2>
+          <p>The orchestration model is real: intake, phase ownership, approvals, logs, metrics, and generated PR copy. The runtime is still simulated locally in the browser, so live repo checkout, CI streaming, and actual PR creation remain backend follow-up work.</p>
+          <ul>
+            <li>Feature request submission</li>
+            <li>Automatic and gate-by-gate modes</li>
+            <li>Task and workspace monitoring</li>
+            <li>PR summary, rationale, risk, migration notes</li>
+            <li>Phase 6 metrics and failure clusters</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
 
-        <div class="card panel">
-          <h2>Typical lifecycle loop</h2>
-          <div class="timeline">
-            <div class="step">
-              <div class="step-title">1. Define the work</div>
-              <div class="muted">Feature ideas, specs, acceptance criteria, and scope are documented.</div>
-            </div>
-            <div class="step">
-              <div class="step-title">2. Break it into execution</div>
-              <div class="muted">Tasks, stories, bugs, and ownership get assigned and prioritized.</div>
-            </div>
-            <div class="step">
-              <div class="step-title">3. Build and review</div>
-              <div class="muted">Developers code in branches, open PRs, and run tests before merge.</div>
-            </div>
-            <div class="step">
-              <div class="step-title">4. Ship and observe</div>
-              <div class="muted">Pipelines deploy changes and teams watch incidents, regressions, and performance.</div>
-            </div>
-            <div class="step">
-              <div class="step-title">5. Capture learning</div>
-              <div class="muted">Release notes, postmortems, and internal knowledge update the system for the next cycle.</div>
-            </div>
+    <section class="toolbar">
+      <div class="card">
+        <div class="head">
+          <div>
+            <h2>Execution mode</h2>
+            <p id="modeSummary">Automatic mode is active. The pipeline will run from intake through PR packaging unless it hits an exception.</p>
+          </div>
+          <div class="mode-toggle" id="modeToggle">
+            <button data-mode="automatic" type="button">Automatic</button>
+            <button data-mode="gate" type="button">Gate-by-gate</button>
           </div>
         </div>
-
-        <div class="card panel">
-          <h2>Best fit by team type</h2>
-          <ul>
-            <li><strong>Enterprise:</strong> Jira + Confluence + Bitbucket or GitHub Enterprise</li>
-            <li><strong>Startup:</strong> Linear + Notion + GitHub</li>
-            <li><strong>Scaling org:</strong> Jira + GitHub + Notion or Confluence</li>
-          </ul>
-          <p class="footer-note">Use the filters above to slice the table by workflow style or SDLC phase.</p>
+        <div class="actions">
+          <button class="btn" id="runBtn" type="button">Run active feature</button>
+          <button class="ghost" id="approveBtn" type="button">Approve next gate</button>
+          <button class="ghost" id="resetBtn" type="button">Reset demo</button>
         </div>
+        <div class="mini-kpis" id="toolbarKpis" style="margin-top:14px;"></div>
+      </div>
+      <div class="card">
+        <div class="head">
+          <div>
+            <h2>Feature queue</h2>
+            <p>Active requests stay visible so a human can jump between work without asking the pipeline to explain itself from scratch.</p>
+          </div>
+        </div>
+        <div class="queue" id="queue"></div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="column">
+        <section class="card">
+          <div class="head"><div><h2>Feature intake</h2><p>Submit the work in plain language. The pipeline turns it into architect, coding, verification, review, and PR packaging tasks.</p></div></div>
+          <form id="featureForm">
+            <div class="intake">
+              <div class="field"><label for="title">Feature request</label><input id="title" required type="text" placeholder="Add tenant-specific API rate limiting" /></div>
+              <div class="field"><label for="repo">Target repo</label><input id="repo" required type="text" placeholder="platform-api" /></div>
+              <div class="field"><label for="requester">Requested by</label><input id="requester" type="text" placeholder="Internal beta / product" /></div>
+              <div class="field"><label for="risk">Risk profile</label><select id="risk"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>
+              <div class="field wide"><label for="outcome">Desired outcome</label><textarea id="outcome" placeholder="Describe the behavior, outcome, and constraints."></textarea></div>
+              <div class="field wide"><label for="acceptance">Acceptance criteria</label><textarea id="acceptance" placeholder="List the tests or outcomes that must be true before a PR is ready."></textarea></div>
+              <div class="field wide"><label for="migration">Migration notes</label><textarea id="migration" placeholder="Optional rollout, seeding, or backward-compatibility notes."></textarea></div>
+            </div>
+            <div class="actions" style="margin-top:14px;">
+              <button class="btn" type="submit">Create pipeline run</button>
+              <span class="note">Data is stored only in local browser storage for this prototype.</span>
+            </div>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="head"><div><h2>Task pipeline</h2><p>Each phase shows the owner, rationale, and current status. Gate mode pauses on approval checkpoints. Automatic mode runs straight through.</p></div></div>
+          <div class="pipeline" id="pipeline"></div>
+        </section>
+
+        <section class="card">
+          <div class="head"><div><h2>Workspaces, diffs, and logs</h2><p>Humans should be able to inspect where the work is happening, how large the change is, and the latest execution note without spelunking terminals.</p></div></div>
+          <div class="workspaces" id="workspaces"></div>
+        </section>
+      </div>
+
+      <div class="column">
+        <section class="card pr-card" id="prCard"></section>
+        <section class="card">
+          <div class="head"><div><h2>Observability</h2><p>Phase 6 makes the system measurable: throughput, pass rates, token spend, review time, and the hotspots where prompts or routing rules need adjustment.</p></div></div>
+          <div class="metrics" id="metrics"></div>
+        </section>
+        <section class="card">
+          <div class="head"><div><h2>Division of labor</h2><p>The routing below is grounded directly in your Codex-like versus Claude-like split.</p></div></div>
+          <div class="routing" id="routing"></div>
+        </section>
+        <section class="card">
+          <div class="head"><div><h2>Execution prompts</h2><p>Architect, coder, and reviewer prompts are surfaced here as human-reviewable control artifacts.</p></div></div>
+          <div class="prompts" id="prompts"></div>
+          <p class="note" style="margin-top:12px;">Still backend-dependent: live CI, actual cost accounting, real repo branching, and PR creation.</p>
+        </section>
       </div>
     </section>
   </main>
 
   <script>
-    const rows = [
-      {
-        phase: 'Discovery & Planning',
-        atlassian: 'Confluence for problem framing and requirements, plus Jira roadmap intake.',
-        modern: 'Notion docs, lightweight planning, sometimes Linear initiatives.',
-        hybrid: 'Notion or Confluence for thinking, Jira for formal intake.',
-        why: 'This is where rough ideas become scoped work with business context.',
-        stack: 'Hybrid'
-      },
-      {
-        phase: 'Documentation & Specs',
-        atlassian: 'Confluence houses PRDs, architecture notes, meeting records, and decision logs.',
-        modern: 'Notion acts as the living spec, wiki, and async collaboration hub.',
-        hybrid: 'Confluence for controlled docs, Notion for flexible team pages.',
-        why: 'Clear specs reduce rework and stop teams from building the wrong thing.',
-        stack: 'Atlassian'
-      },
-      {
-        phase: 'Work Management',
-        atlassian: 'Jira manages epics, stories, bugs, sprints, workflows, and reporting.',
-        modern: 'Linear tracks issues, cycles, priorities, and project views with less overhead.',
-        hybrid: 'Jira for cross functional governance, GitHub Issues for local dev work.',
-        why: 'Work tracking keeps ownership, status, and sequencing visible.',
-        stack: 'Atlassian'
-      },
-      {
-        phase: 'Development',
-        atlassian: 'Bitbucket repositories, branches, and code collaboration.',
-        modern: 'GitHub repositories dominate for source control, branching, and collaboration.',
-        hybrid: 'GitHub for code, Jira issue keys in branch names and commits.',
-        why: 'This is the actual build phase where code moves from idea to implementation.',
-        stack: 'Modern'
-      },
-      {
-        phase: 'Code Review',
-        atlassian: 'Bitbucket pull requests with inline review and approval rules.',
-        modern: 'GitHub pull requests with broader ecosystem support and review automation.',
-        hybrid: 'GitHub PRs linked back to Jira tickets for status updates.',
-        why: 'Review improves quality, catches bugs, and shares knowledge across the team.',
-        stack: 'Hybrid'
-      },
-      {
-        phase: 'CI/CD & Release',
-        atlassian: 'Bitbucket Pipelines and Jira release tracking.',
-        modern: 'GitHub Actions plus release workflows and deployment integrations.',
-        hybrid: 'GitHub Actions for delivery, Jira for release coordination and audit trail.',
-        why: 'Automation reduces manual risk and helps teams ship consistently.',
-        stack: 'Hybrid'
-      },
-      {
-        phase: 'Operations & Support',
-        atlassian: 'Jira Service Management or Jira incident workflows, linked to runbooks in Confluence.',
-        modern: 'GitHub Issues, incident tools, Slack, and Notion runbooks.',
-        hybrid: 'Dedicated incident stack plus Jira tickets and knowledge pages.',
-        why: 'Support and incident response turn production problems into trackable follow up work.',
-        stack: 'Hybrid'
-      },
-      {
-        phase: 'Retrospective & Knowledge Capture',
-        atlassian: 'Confluence postmortems, release notes, retros, and internal documentation.',
-        modern: 'Notion retro docs, changelogs, and team playbooks.',
-        hybrid: 'Postmortem in Confluence or Notion, action items pushed into Jira.',
-        why: 'The team gets compounding value only if lessons learned feed the next cycle.',
-        stack: 'Hybrid'
-      }
+    const STORE = "ai-control-surface:v1";
+    const API = {
+      health: "/api/health",
+      state: "/api/state",
+      reset: "/api/reset",
+      mode: "/api/mode",
+      features: "/api/features"
+    };
+    const phases = [
+      { key: "requirements", title: "Requirements and design", owner: "Claude-like", why: "Clarify scope, architecture, interfaces, and the test plan.", diff: 3, tokens: 9200, cost: 0.22, tests: "Planning review", log: "Generated implementation tasks, edge cases, and acceptance criteria." },
+      { key: "implementation", title: "Implementation", owner: "Codex-like", why: "Patch the concrete files and preserve behavior outside the task boundary.", diff: 20, tokens: 12800, cost: 0.31, tests: "Unit + integration", log: "Applied targeted code changes and added task-scoped tests." },
+      { key: "verification", title: "Verification", owner: "Codex-like", why: "Tighten the repair loop until the task is green and stable.", diff: 7, tokens: 6200, cost: 0.14, tests: "Lint + tests", log: "Ran checks, fixed failures, and refreshed the verification notes." },
+      { key: "review", title: "Review and docs", owner: "Claude-like", why: "Check architectural fit, risk, migration concerns, and documentation impact.", diff: 5, tokens: 6900, cost: 0.16, tests: "Review only", log: "Generated risk analysis, rationale, and follow-up notes for humans." },
+      { key: "pr", title: "PR packaging", owner: "Claude-like", why: "Produce the summary, rationale, risk analysis, and migration notes for approval.", diff: 4, tokens: 5100, cost: 0.11, tests: "PR copy", log: "Prepared the final PR packet and rollout guidance." }
     ];
+    const routes = [
+      { title: "Codex-like", text: "Implementation and mechanical work", bullets: ["Implement functions, modules, endpoints, tests, and SDK wiring.", "Handle repair loops from logs and failing checks.", "Stay local and concrete, not architectural or policy-heavy."] },
+      { title: "Claude-like", text: "Reasoning, oversight, and docs", bullets: ["Clarify requirements and break work into implementation tasks.", "Own architecture, trade-offs, edge cases, and risk review.", "Generate PR summaries, migration notes, ADRs, and review comments."] }
+    ];
+    const promptCards = [
+      { title: "Architect-Agent", body: "Output planning JSON with requirements_summary, architecture, implementation_tasks, and test_plan.", prompt: "Clarify requirements -> design the change -> decompose into implementation tasks -> define tests -> review diffs later." },
+      { title: "Coder-Agent", body: "Take one implementation task, patch the expected files, preserve behavior, and update the proving tests.", prompt: "Implement only the assigned task, avoid new public APIs unless allowed, and return file-level changes plus notes." },
+      { title: "Reviewer-Agent", body: "Inspect diffs, compare against the task and test plan, and produce human-ready PR copy and docs updates.", prompt: "Output review_summary, status, risks, required_changes, pr_copy, and docs_updates." }
+    ];
+    let backend = { available: false };
 
-    const body = document.getElementById('tableBody');
-    const search = document.getElementById('search');
-    const stackFilter = document.getElementById('stackFilter');
-    const phaseFilter = document.getElementById('phaseFilter');
-
-    function badgeClass(label) {
-      if (label === 'Atlassian') return 'atlassian';
-      if (label === 'Modern') return 'modern';
-      return 'hybrid';
+    function esc(value) {
+      return String(value || "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
     }
-
-    function render() {
-      const q = search.value.trim().toLowerCase();
-      const stack = stackFilter.value;
-      const phase = phaseFilter.value;
-
-      const filtered = rows.filter(row => {
-        const haystack = [row.phase, row.atlassian, row.modern, row.hybrid, row.why, row.stack].join(' ').toLowerCase();
-        const matchesSearch = !q || haystack.includes(q);
-        const matchesStack = stack === 'all' || row.stack === stack;
-        const matchesPhase = phase === 'all' || row.phase === phase;
-        return matchesSearch && matchesStack && matchesPhase;
+    function id() { return `req-${Math.random().toString(36).slice(2, 10)}`; }
+    function riskLabel(risk) { return `${risk.charAt(0).toUpperCase()}${risk.slice(1)} risk`; }
+    function createTasks(featureId, mode, title) {
+      const boost = Math.min(Math.ceil((title || "").length / 20), 4);
+      return phases.map((phase, index) => ({
+        id: `${featureId}-${phase.key}`,
+        title: phase.title,
+        owner: phase.owner,
+        why: phase.why,
+        workspace: `${phase.key}/${featureId.slice(-4)}`,
+        branch: `agent/${phase.key}/${featureId.slice(-5)}`,
+        diff: phase.diff + boost + index,
+        tokens: phase.tokens + (boost * 400),
+        cost: Number((phase.cost + boost * 0.01).toFixed(2)),
+        tests: phase.tests,
+        log: phase.log,
+        status: mode === "gate" ? (index === 0 ? "awaiting_approval" : "queued") : (index === 0 ? "running" : "queued")
+      }));
+    }
+    function createFeature(data, mode) {
+      const featureId = id();
+      return {
+        id: featureId,
+        title: data.title,
+        repo: data.repo,
+        requestedBy: data.requestedBy || "Internal beta",
+        risk: data.risk,
+        outcome: data.outcome,
+        acceptance: data.acceptance,
+        migration: data.migration,
+        tasks: createTasks(featureId, mode, data.title)
+      };
+    }
+    function stepAuto(feature) {
+      const running = feature.tasks.find((task) => task.status === "running");
+      if (running) running.status = "completed";
+      const next = feature.tasks.find((task) => task.status === "queued");
+      if (next) next.status = "running";
+    }
+    function finishAuto(feature) { while (feature.tasks.some((task) => task.status === "running" || task.status === "queued")) stepAuto(feature); }
+    function stepGate(feature) {
+      const open = feature.tasks.find((task) => task.status === "awaiting_approval");
+      if (open) open.status = "completed";
+      const next = feature.tasks.find((task) => task.status === "queued");
+      if (next) next.status = "awaiting_approval";
+    }
+    function defaults() {
+      const mode = "automatic";
+      const a = createFeature({
+        title: "Add tenant-specific API rate limiting",
+        repo: "platform-api",
+        requestedBy: "Joey / product",
+        risk: "medium",
+        outcome: "Public endpoints should enforce tenant-specific quotas and report operator-friendly telemetry.",
+        acceptance: "Quota checks, overrides, and review docs are all green before PR.",
+        migration: "Seed default quotas and release behind a flag."
+      }, mode);
+      finishAuto(a);
+      const b = createFeature({
+        title: "Repair async retry handling in worker jobs",
+        repo: "worker-core",
+        requestedBy: "Reliability team",
+        risk: "high",
+        outcome: "Stop duplicate retries while preserving queue telemetry and safe failure behavior.",
+        acceptance: "Async edge cases covered and rollback notes included.",
+        migration: "Keep retry envelope backward compatible."
+      }, "gate");
+      return { mode, activeFeatureId: a.id, features: [a, b] };
+    }
+    function loadLocal() {
+      try {
+        const raw = localStorage.getItem(STORE);
+        return raw ? JSON.parse(raw) : defaults();
+      } catch { return defaults(); }
+    }
+    function saveLocal() { localStorage.setItem(STORE, JSON.stringify(state)); }
+    async function requestJson(url, options = {}) {
+      const response = await fetch(url, {
+        headers: { "Content-Type": "application/json" },
+        ...options
       });
-
-      body.innerHTML = filtered.map(row => `
-        <tr>
-          <td>
-            <strong>${row.phase}</strong><br>
-            <span class="badge ${badgeClass(row.stack)}">${row.stack}</span>
-          </td>
-          <td>${row.atlassian}</td>
-          <td>${row.modern}</td>
-          <td>${row.hybrid}</td>
-          <td>${row.why}</td>
-        </tr>
-      `).join('');
-
-      if (!filtered.length) {
-        body.innerHTML = `
-          <tr>
-            <td colspan="5">
-              <strong>No matches found.</strong><br>
-              <span class="muted">Try a different search term or relax the filters.</span>
-            </td>
-          </tr>
-        `;
+      if (!response.ok) {
+        throw new Error(`Request failed: ${response.status}`);
+      }
+      return response.json();
+    }
+    async function syncFromBackend() {
+      const nextState = await requestJson(API.state);
+      backend.available = true;
+      state = nextState;
+      saveLocal();
+      return nextState;
+    }
+    async function initState() {
+      try {
+        await requestJson(API.health);
+        return await syncFromBackend();
+      } catch {
+        backend.available = false;
+        state = loadLocal();
+        return state;
       }
     }
+    function active() { return state.features.find((feature) => feature.id === state.activeFeatureId) || state.features[0] || null; }
+    function done(feature) { return feature.tasks.filter((task) => task.status === "completed").length; }
+    function finished(feature) { return done(feature) === feature.tasks.length; }
+    function summaryText() {
+      const source = backend.available ? " Shared backend connected." : " Using local browser state.";
+      return (state.mode === "gate"
+        ? "Gate-by-gate mode is active. Each phase pauses for human approval before the next workspace opens."
+        : "Automatic mode is active. The pipeline can move from intake through PR packaging with exception-based intervention only.") + source;
+    }
+    function aggregates() {
+      const all = state.features.flatMap((feature) => feature.tasks);
+      const completed = all.filter((task) => task.status === "completed").length;
+      const running = all.filter((task) => task.status === "running").length;
+      const awaiting = all.filter((task) => task.status === "awaiting_approval").length;
+      const tokens = all.reduce((sum, task) => sum + task.tokens, 0);
+      const cost = all.reduce((sum, task) => sum + task.cost, 0);
+      return {
+        featureCount: state.features.length,
+        ready: state.features.filter(finished).length,
+        running,
+        awaiting,
+        tokens,
+        cost,
+        successRate: Math.round((completed / Math.max(all.length, 1)) * 100)
+      };
+    }
+    function render() {
+      const agg = aggregates();
+      const feature = active();
+      document.getElementById("heroKpis").innerHTML = [
+        { value: `${agg.ready}/${agg.featureCount}`, label: "features packaged for PR" },
+        { value: `${agg.successRate}%`, label: "phase success rate" },
+        { value: `$${agg.cost.toFixed(2)}`, label: "simulated model spend" }
+      ].map(item => `<div class="kpi"><strong>${esc(item.value)}</strong><span>${esc(item.label)}</span></div>`).join("");
+      document.getElementById("toolbarKpis").innerHTML = [
+        { value: agg.running, label: "running workspaces" },
+        { value: agg.awaiting, label: "approval gates waiting" }
+      ].map(item => `<div class="kpi"><strong>${esc(item.value)}</strong><span>${esc(item.label)}</span></div>`).join("");
+      document.getElementById("modeSummary").textContent = summaryText();
+      document.querySelectorAll("#modeToggle button").forEach(button => button.classList.toggle("active", button.dataset.mode === state.mode));
+      document.getElementById("approveBtn").disabled = state.mode !== "gate";
 
-    search.addEventListener('input', render);
-    stackFilter.addEventListener('change', render);
-    phaseFilter.addEventListener('change', render);
-    render();
+      document.getElementById("queue").innerHTML = state.features.map(featureItem => `
+        <article class="queue-item">
+          <div class="queue-top">
+            <div><h3>${esc(featureItem.title)}</h3><p>${esc(featureItem.repo)} / ${esc(featureItem.requestedBy)}</p></div>
+            <button type="button" data-feature="${esc(featureItem.id)}">${featureItem.id === state.activeFeatureId ? "Active" : "View"}</button>
+          </div>
+          <div class="pills">
+            <span class="pill">${esc(riskLabel(featureItem.risk))}</span>
+            <span class="pill">${done(featureItem)}/${featureItem.tasks.length} phases complete</span>
+            <span class="pill">${finished(featureItem) ? "PR ready" : "In flight"}</span>
+          </div>
+        </article>
+      `).join("");
+
+      document.getElementById("pipeline").innerHTML = feature ? feature.tasks.map((task, index) => `
+        <article class="phase">
+          <div class="phase-top">
+            <div><h3>${index + 1}. ${esc(task.title)}</h3><p>${esc(task.why)}</p></div>
+            <span class="status ${esc(task.status)}">${esc(task.status.replaceAll("_", " "))}</span>
+          </div>
+          <div class="pills">
+            <span class="pill">${esc(task.owner)}</span>
+            <span class="pill">${esc(task.workspace)}</span>
+            <span class="pill">${esc(task.diff)} files</span>
+          </div>
+        </article>
+      `).join("") : `<div class="phase"><p>No active feature yet.</p></div>`;
+
+      document.getElementById("workspaces").innerHTML = feature ? feature.tasks.map(task => `
+        <article class="workspace">
+          <div class="workspace-top">
+            <div><h3>${esc(task.title)}</h3><p>${esc(task.owner)} / ${esc(task.workspace)}</p></div>
+            <span class="status ${esc(task.status)}">${esc(task.status.replaceAll("_", " "))}</span>
+          </div>
+          <div class="pills">
+            <span class="pill">${esc(task.branch)}</span>
+            <span class="pill">${esc(task.tests)}</span>
+            <span class="pill">${esc(task.tokens.toLocaleString())} tokens</span>
+            <span class="pill">$${esc(task.cost.toFixed(2))}</span>
+          </div>
+          <pre>${esc(`diff: ~${task.diff} files\nlatest-log: ${task.log}`)}</pre>
+        </article>
+      `).join("") : "";
+
+      const riskList = feature ? [
+        `${riskLabel(feature.risk)} because delivery behavior, automation, or rollout assumptions may shift.`,
+        state.mode === "gate" ? "Human approvals reduce automation risk but add cycle-time overhead." : "Automatic mode reduces orchestration friction but needs sharp exception reporting.",
+        "Architect review should confirm compatibility boundaries before merge."
+      ] : ["No active risk analysis yet."];
+      document.getElementById("prCard").innerHTML = feature ? `
+        <div class="head"><div><h2>Claude-style PR explanation</h2><p>${esc(feature.repo)} / ${esc(feature.title)}</p></div><span class="status running">generated copy</span></div>
+        <div class="pr-copy">
+          <section><h3>Summary</h3><p>This run packages ${esc(feature.title.toLowerCase())} for ${esc(feature.repo)}. ${finished(feature) ? "All phases are complete and the PR packet is ready." : `${done(feature)} of ${feature.tasks.length} phases are currently complete.`}</p></section>
+          <section><h3>Rationale</h3><p>${esc(feature.outcome || "No explicit outcome was provided, so the system is carrying the intake summary forward.")}</p></section>
+          <section><h3>Risk analysis</h3><ul>${riskList.map(item => `<li>${esc(item)}</li>`).join("")}</ul></section>
+          <section><h3>Migration notes</h3><p>${esc(feature.migration || "No migration notes were supplied. Reviewer stage should verify rollout posture.")}</p></section>
+        </div>
+      ` : `<h2>Claude-style PR explanation</h2><p>No active feature selected.</p>`;
+
+      document.getElementById("metrics").innerHTML = [
+        { title: "Task throughput", value: `${agg.successRate}%`, text: "Completion rate across architect, coder, verify, and review phases." },
+        { title: "Token usage", value: `${Math.round(agg.tokens / 1000)}k`, text: `Estimated model volume across all stored runs. Total spend: $${agg.cost.toFixed(2)}.` },
+        { title: "Human review time", value: `${state.mode === "gate" ? 29 : 16}m`, text: "Gate mode is slower but safer for high-risk work." },
+        { title: "Failure clusters", value: "3", text: "Async bugs, high-risk migrations, and review bottlenecks need recurring tuning." }
+      ].map(item => `<article class="metric"><h3>${esc(item.title)}</h3><strong>${esc(item.value)}</strong><p>${esc(item.text)}</p></article>`).join("");
+
+      document.getElementById("routing").innerHTML = routes.map(route => `
+        <article class="route">
+          <h3>${esc(route.title)}</h3>
+          <p>${esc(route.text)}</p>
+          <ul>${route.bullets.map(bullet => `<li>${esc(bullet)}</li>`).join("")}</ul>
+        </article>
+      `).join("");
+
+      document.getElementById("prompts").innerHTML = promptCards.map((card, index) => `
+        <details ${index === 0 ? "open" : ""}>
+          <summary>${esc(card.title)}</summary>
+          <div class="prompt-body">
+            <p>${esc(card.body)}</p>
+            <pre>${esc(card.prompt)}</pre>
+          </div>
+        </details>
+      `).join("");
+    }
+
+    async function runActive() {
+      const feature = active();
+      if (!feature) return;
+      if (backend.available) {
+        state = await requestJson(`${API.features}/${feature.id}/run`, { method: "POST" });
+      } else {
+        if (state.mode === "gate") stepGate(feature); else finishAuto(feature);
+      }
+      saveLocal(); render();
+    }
+    async function approveNext() {
+      if (state.mode !== "gate") return;
+      const feature = active();
+      if (!feature) return;
+      if (backend.available) {
+        state = await requestJson(`${API.features}/${feature.id}/approve`, { method: "POST" });
+      } else {
+        stepGate(feature);
+      }
+      saveLocal(); render();
+    }
+
+    let state = defaults();
+    document.getElementById("featureForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const featureInput = {
+        title: document.getElementById("title").value.trim(),
+        repo: document.getElementById("repo").value.trim(),
+        requestedBy: document.getElementById("requester").value.trim(),
+        risk: document.getElementById("risk").value,
+        outcome: document.getElementById("outcome").value.trim(),
+        acceptance: document.getElementById("acceptance").value.trim(),
+        migration: document.getElementById("migration").value.trim()
+      };
+      if (!featureInput.title || !featureInput.repo) return;
+      if (backend.available) {
+        state = await requestJson(API.features, { method: "POST", body: JSON.stringify(featureInput) });
+      } else {
+        const feature = createFeature(featureInput, state.mode);
+        state.features.unshift(feature);
+        state.activeFeatureId = feature.id;
+        if (state.mode === "automatic") stepAuto(feature);
+      }
+      event.currentTarget.reset();
+      document.getElementById("risk").value = "medium";
+      saveLocal(); render();
+    });
+    document.getElementById("modeToggle").addEventListener("click", async (event) => {
+      const button = event.target.closest("[data-mode]");
+      if (!button) return;
+      if (backend.available) {
+        state = await requestJson(API.mode, {
+          method: "POST",
+          body: JSON.stringify({ mode: button.dataset.mode })
+        });
+      } else {
+        state.mode = button.dataset.mode;
+      }
+      saveLocal(); render();
+    });
+    document.getElementById("queue").addEventListener("click", async (event) => {
+      const button = event.target.closest("[data-feature]");
+      if (!button) return;
+      if (backend.available) {
+        state = await requestJson(`${API.features}/${button.dataset.feature}/activate`, { method: "POST" });
+      } else {
+        state.activeFeatureId = button.dataset.feature;
+      }
+      saveLocal(); render();
+    });
+    document.getElementById("runBtn").addEventListener("click", runActive);
+    document.getElementById("approveBtn").addEventListener("click", approveNext);
+    document.getElementById("resetBtn").addEventListener("click", async () => {
+      if (backend.available) {
+        state = await requestJson(API.reset, { method: "POST" });
+      } else {
+        state = defaults();
+      }
+      saveLocal(); render();
+    });
+
+    initState().then(() => {
+      saveLocal();
+      render();
+    });
   </script>
 </body>
 </html>
